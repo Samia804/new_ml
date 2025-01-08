@@ -166,6 +166,8 @@ def send_payload(data: InputData):
     logging.debug("Received payload: %s", data.dict())
     logging.debug("Sending to Vext URL: %s", URL)
     logging.debug("Headers: %s", headers)
+    logging.debug("Headers sent to Vext: %s", headers)
+
 
     try:
         response = requests.post(URL, headers=headers, json=data.dict())
