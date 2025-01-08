@@ -160,22 +160,29 @@ def root():
     logging.info("Root endpoint accessed.")
     return {"message": "API is running"}
 
-
 @app.post("/send")
 def send_payload(data: InputData):
     logging.debug("Received payload: %s", data.dict())
     logging.debug("Sending to Vext URL: %s", URL)
     logging.debug("Headers: %s", headers)
-    logging.debug("Headers sent to Vext: %s", headers)
-
 
     try:
+        # Send POST request to Vext API
         response = requests.post(URL, headers=headers, json=data.dict())
         logging.debug("Vext response status: %s", response.status_code)
         logging.debug("Vext response content: %s", response.text)
+
+        # Raise an HTTP exception for non-200 status codes
         response.raise_for_status()
+
+        # Parse and log the response JSON
         response_json = response.json()
-        return {"status": "success", "data": response_json}
+        logging.info("Parsed response JSON: %s", response_json)
+
+        # Simplify and return the response for React
+        answer = response_json.get("text", "No response text available.")
+        return {"status": "success", "answer": answer}
+
     except requests.exceptions.HTTPError as http_err:
         logging.error("HTTPError occurred: %s", http_err.response.text)
         raise HTTPException(
