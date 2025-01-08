@@ -138,7 +138,7 @@ app.add_middleware(
 
 # Load sensitive data from environment variables
 API_KEY = os.getenv("VEXT_API_KEY", "9zCxU3jb.nmhDkkk94PQA27kUx6F6TTsKRw6lxXHy")  # Replace with your Vext API Key
-URL = os.getenv("VEXT_URL", "https://payload.vextapp.com/hook/YOUR_HOOK_ID/catch/hello")  # Replace with the correct URL
+URL = os.getenv("VEXT_URL", "https://payload.vextapp.com/hook/13HDZDD8G7/catch/hello")  # Replace with the correct URL
 
 # Check if the API key or URL is missing
 if not API_KEY or not URL:
@@ -160,31 +160,20 @@ def root():
     logging.info("Root endpoint accessed.")
     return {"message": "API is running"}
 
-# Endpoint to send payload to Vext API
+
 @app.post("/send")
 def send_payload(data: InputData):
     logging.debug("Received payload: %s", data.dict())
-    logging.debug("Using headers: %s", headers)
-    logging.debug("Using URL: %s", URL)
+    logging.debug("Sending to Vext URL: %s", URL)
+    logging.debug("Headers: %s", headers)
 
     try:
-        # Send POST request to Vext API
         response = requests.post(URL, headers=headers, json=data.dict())
-
-        # Log raw response details for debugging
-        logging.debug("Raw response status: %s", response.status_code)
-        logging.debug("Raw response content: %s", response.text)
-
-        # Raise an HTTP exception for non-200 status codes
+        logging.debug("Vext response status: %s", response.status_code)
+        logging.debug("Vext response content: %s", response.text)
         response.raise_for_status()
-
-        # Parse and log the response JSON
         response_json = response.json()
-        logging.info("Parsed response JSON: %s", response_json)
-
-        # Return structured response
         return {"status": "success", "data": response_json}
-
     except requests.exceptions.HTTPError as http_err:
         logging.error("HTTPError occurred: %s", http_err.response.text)
         raise HTTPException(
