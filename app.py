@@ -137,7 +137,7 @@ app.add_middleware(
 )
 
 # Load sensitive data from environment variables
-API_KEY = os.getenv("VEXT_API_KEY", "9zCxU3jb.nmhDkkk94PQA27kUx6F6TTsKRw6lxXHy")  # Replace with your Vext API Key
+API_KEY = os.getenv("VEXT_API_KEY", "H0e4gjr6.0LG0g16NxaV7IPArQnmBETxEsrzzTdb6")  # Replace with your Vext API Key
 URL = os.getenv("VEXT_URL", "https://payload.vextapp.com/hook/13HDZDD8G7/catch/hello")  # Replace with the correct URL
 
 # Check if the API key or URL is missing
